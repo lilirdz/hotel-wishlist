@@ -1,1 +1,1 @@
-# hotel-wishlist
+Welcome to out Hotel Wishlist!
