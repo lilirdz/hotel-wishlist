@@ -1,6 +1,6 @@
 def choose_city
     cities = ["Houston", "LA", "Las Vegas", "Miami","Chicago"]
-    select_city = @prompt.select("Choose your city", cities)
+    select_city = @prompt.select("Choose a city", cities)
     puts "You selected #{select_city}"
     filtered_hotels = Hotel.all.select{|hotel| hotel.city == select_city}
     filtered_hotels.each do |x|
@@ -9,11 +9,11 @@ def choose_city
 end
 
 def more_filters?(user)
-    filter_more = @prompt.yes?("Would you like to filter some more?")
+    filter_more = @prompt.yes?("Do you want to also filter by price or rating?")
     if filter_more == true
         choose_preferences(user)
     else
-        selection = @prompt.ask("Which hotel do you like?")
+        selection = @prompt.ask("Which hotel would you like to add to your list?")
         chosen_hotel = Hotel.find_by(hotel_name: selection)
         user.add_hotel(chosen_hotel)
         #ty's code goes here
