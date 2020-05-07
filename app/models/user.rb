@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
     has_many :hotels, through: :lists
 
     def add_hotel(hotel)
+        # h = hotels.where(hotel_name: hotel)
         List.create(user_id: self.id,hotel_id: hotel.id)
         display_list
     end

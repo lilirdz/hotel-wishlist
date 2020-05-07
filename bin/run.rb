@@ -12,7 +12,8 @@ def menu(user)
         menu(user)
     elsif user_input == menu[1]
         #select and add to list method
-        choose_city(user)
+        choose_city
+        more_filters?
         menu(user)
     elsif user_input == menu[2]
         #remove from list method
@@ -36,8 +37,6 @@ def welcome
     menu(user)
 end
 
-# @test = welcome
-# puts test
 welcome
 
 # def menu(user)

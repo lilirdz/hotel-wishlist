@@ -1,4 +1,4 @@
-def choose_city(user)
+def choose_city
     cities = ["Houston", "LA", "Las Vegas", "Miami","Chicago"]
     select_city = @prompt.select("Choose your city", cities)
     puts "You selected #{select_city}"
@@ -6,24 +6,27 @@ def choose_city(user)
     filtered_hotels.each do |x|
        puts "Hotel: #{x.hotel_name}, Address: #{x.address}, City: #{x.city}, Average Rating: #{x.avg_rating}, Price: #{x.price}"
     end
-    hotel_names = filtered_hotels.map {|x| x.hotel_name}
-    hotel_ids = filtered_hotels.map {|x| x.id}
+    # hotel_names = filtered_hotels.map {|x| x.hotel_name}
+    # hotel_ids = filtered_hotels.map {|x| x.id}
+end
+
+def more_filters?
     filter_more = @prompt.yes?("Would you like to filter some more?")
     if filter_more == true
         choose_preferences
     else
         selection = @prompt.ask("Which hotel do you like?")
-        puts "Hello"
+        #add hotel to list here
+        #puts "Hello"
         # b = Hotel.find_by(hotel_name: selection)
-        b = Hotel.all.select{|x| x.hotel_name == selection}
-        choosen_hotel_id = b.map{|x| x.id}
-        # puts choosen_hotel_id
-        user.List.find_by_or_create(hotel_id:choosen_hotel_id)
-        # user.add_hotel(choosen_hotel_id)
+        # b = Hotel.all.select{|x| x.hotel_name == selection}
+        # choosen_hotel_id = b.map{|x| x.id}
+        # user.List.find_by_or_create(hotel_id:choosen_hotel_id)
+        user.add_hotel(selection)
         puts "The #{selection} Hotel has been added to your list!"
         user.display_list
+        #ty's code goes here
     end
-    # menu()
 end
 
 
@@ -42,6 +45,7 @@ def choose_preferences
             select_hotel = @prompt.ask("Please type the hotel you wish to add")
             #add hotel to list goes here
             puts "#{select_hotel} has been added to your list!"
+            #ty's code goes here
         end
     elsif user_preferences == preferences[1]
         price_range = [100,200]
@@ -55,6 +59,7 @@ def choose_preferences
             select_hotel = @prompt.ask("Please type the hotel you wish to add")
             #add hotel to list goes here
             puts "#{select_hotel} has been added to your list!"
+            #ty's code goes here
         end
     end
 end
