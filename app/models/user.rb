@@ -14,11 +14,11 @@ class User < ActiveRecord::Base
         user_list.each do |info| 
             p "Hotel: #{info[0]}, Address: #{info[1]}, City: #{info[2]}, Average Rating: #{info[3]}, Price: #{info[4]}"
         end
-        user_list
     end
 
-    def delete_hotel(id)
-        hotels.destroy(id)
+    def delete_hotel(name)
+        #hotels.delete_by(hotel_name: name)
+        hotels.where(hotel_name: name).delete_all
         display_list
     end
 

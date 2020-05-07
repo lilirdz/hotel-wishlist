@@ -16,7 +16,6 @@ def menu(user)
         menu(user)
     elsif user_input == menu[2]
         #remove from list method
-        #user.delete_all_hotels
         delete_options(user)
         menu(user)
     elsif user_input == menu[3]

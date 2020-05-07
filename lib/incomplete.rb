@@ -63,14 +63,18 @@ def delete_options(user)
     if user.hotels.empty?
         puts "You have no hotels saved."
     else
-        choices = ["Delete hotels by city", "Delete all hotels"]
+        choices = ["Delete hotels by city","Delete hotel by name", "Delete all hotels"]
         user_input = @prompt.select("Choose an option",choices)
         if user_input == choices[0]
             cities = ["Houston", "LA", "Las Vegas", "Miami","Chicago"]
-            choose_city = @prompt.select("Which city",cities)
-            #Hotel.delete_by(user_id: user, city: choose_city)
+            choose_city = @prompt.select("Which city?",cities)
             user.delete_hotels_by_location(choose_city)
         elsif user_input == choices[1]
+            user.display_list
+            choose_hotel = @prompt.ask("Which hotel do you want to delete?")
+            user.delete_hotel(choose_hotel)
+            user.display_list
+        elsif user_input == choices[2]
             user.delete_all_hotels
         end
     end
