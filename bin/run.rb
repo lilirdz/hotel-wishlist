@@ -16,7 +16,9 @@ def menu(user)
         menu(user)
     elsif user_input == menu[2]
         #remove from list method
-        #delete_all_hotels(user)
+        #user.delete_all_hotels
+        delete_options(user)
+        menu(user)
     elsif user_input == menu[3]
         #need to clear current user data if a new user is using app
         welcome

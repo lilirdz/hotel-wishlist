@@ -11,6 +11,7 @@ h3 = Hotel.create(hotel_name:"Hilton",address:"456 Main",city: "Houston",avg_rat
 
 
 l1 = List.create(user_id: u1.id, hotel_id: h1.id)
+l2 = List.create(user_id: u1.id, hotel_id: h2.id)
 
 # binding.pry
 # 0

@@ -25,6 +25,7 @@ def choose_city(user)
         # d = c.map {|x| x.id}
         # p d
         puts "world"
+        # user.add_hotel(#hotel.id)
         # List.find_or_create_by(hotel_id: b)
     end
     # menu()
@@ -51,55 +52,31 @@ end
 # end
 
 
-# def add_hotel(hotel)
-#     List.find_or_create_by(hotel_id: hotel.id)
-# end
-
 # def delete_hotel
 #     user_hotels = display_hotel_list_by_user
 #     choice = @prompt.multi_select("Select the hotel(s) you want to remove", user_hotels)
 #     List.destroy_by(user_id: user,hotel_id: hotel.id)
 # end
 
-# def delete_all_hotels(user)
-#     if user.hotels.empty?
-#         puts "You have no hotels saved."
-#     else
-#         Hotel.delete_all(user_id: user) 
-#     end   
-# end
 
-# # def delete_hotel_by_city(hotel_city,hotel_id)
-# #     hotels.delete_all(hotel_city,hotel_id)
-# # end
+def delete_options(user)
+    if user.hotels.empty?
+        puts "You have no hotels saved."
+    else
+        choices = ["Delete hotels by city", "Delete all hotels"]
+        user_input = @prompt.select("Choose an option",choices)
+        if user_input == choices[0]
+            cities = ["Houston", "LA", "Las Vegas", "Miami","Chicago"]
+            choose_city = @prompt.select("Which city",cities)
+            #Hotel.delete_by(user_id: user, city: choose_city)
+            user.delete_hotels_by_location(choose_city)
+        elsif user_input == choices[1]
+            user.delete_all_hotels
+        end
+    end
+end
 
-# def delete_all_hotels(user)
-#     if user.hotels.empty?
-#         puts "You have no hotels saved."
-#     else #give them the option to choose to delete based on choices
-#         choices = ["Delete hotels by city","Delete hotels by rating","Delete hotels by price", "Delete all hotels"]
-#         user_input = prompt.select("Choose an option",choices)
-#         if user_input == choices[0]
-#             cities = ["X","Y","Z"]
-#             choose_city = @prompt.select("Which city",cities)
-#             # @prompt.ask("Which city?")
-#             Hotel.delete_by(user_id: user, city: choose_city)
-#         elsif user_input == choices[1]
 
-#         elsif user_input == choices[2]
-#         elsif user_input == choices[3]
-#             Hotel.delete_all(user_id: user)
-#         end
-#     end
-# end
-
-# def display_hotel_list_by_user(user)
-#     user_list = []
-#     user = User.find(self.id)
-#     user.hotels.each {|hotel| user_list << Hotel.all}
-# end
-
-# u1 = User.create(user_name: "lili")
 
 
 # def display_hotel_list_by_user(user)
@@ -111,4 +88,4 @@ end
 # binding.pry
 # 0
 
-#still need to group avg_rating and prices, in sql it's using case and renaming
+#still need to group avg_rating and prices, in sql using case and renaming
