@@ -12,7 +12,7 @@ def welcome
     @name = $prompt.ask('What is your name?')       #first question
     @password = $prompt.mask('What is your password?')
     menu
-    # profile(@name, @password)
+    profile(@name, @password)
 end
 
 
@@ -48,72 +48,90 @@ def display_hotels(city_choice)
     
     if city_choice == "Houston"     #calls on a method (houston) and converts its return value to multichoice list 
         @hotel_choice = $prompt.select("Choose Your Hotel", houston, active_color: :on_bright_green)
+    elsif city_choice == "LA"
+        @hotel_choice = $prompt.select("Choose Your Hotel", la, active_color: :on_bright_green)
+    elsif city_choice == "Las Vegas"
+        @hotel_choice = $prompt.select("Choose Your Hotel", lasvegas, active_color: :on_bright_green)
+    elsif city_choice == "Miami"
+        @hotel_choice = $prompt.select("Choose Your Hotel", miami, active_color: :on_bright_green)
+    elsif city_choice == "Chicago"
+        @hotel_choice = $prompt.select("Choose Your Hotel", chicago, active_color: :on_bright_green)
     end
     getChosenHotelRating(@hotel_choice)
-    # testing
-    # puts "you're good"
     
-    # recommend
 end
 
 
 def getChosenHotelRating(hotel_choice)          #basically just searches for the hotel instance by name and returns its rating
-    name = Hotel.find_by hotel_name: @hotel_choice
-    puts name
+    @rating = (Hotel.find_by hotel_name: @hotel_choice).avg_rating
+    
+    recommend(@rating)
     # Hotel.where("hotel_name = ?", @hotel_choice)
     # "you're good"
 end
 
-
-def hotelRecommended(hotel_choice)
-    if getChosenHotelRating(hotel_choice) < 5
-        name_of_hotel = (Hotel.find_by avg_rating: getChosenHotelRating(hotel_choice)+1).hotel_name
+def recommend(rating)                           #can we pass a method into a string using {} ?
+    
+    if  @rating == 4
+        @response = $prompt.yes?("Awesome! We also have a luxurious style option with a hot tub/jacuzzi. Would you consider this choice?")
+        hotelfivestar(@response)
+    elsif @rating == 3
+        @response = $prompt.yes?("Great! Would you mind checking out another with a higher max. occupancy?")
+        hotelfourstar(@response)
     end
-    # else
-    #     puts "Yay, everyone likes to lodge at #{hotel_choice}"
-    #     key = (Hotel.find_by hotel_name: hotel_choice).id
-    #     List.create(hotel_id: key) 
-    # end
+    
+    
 end
 
 
-
-def testing
-    puts @hotel_choice
-end
-
-def houston 
-    arr = Hotel.where("city==?","Houston")    #this prints out the *names* of hotels in the chosen city
-    arr.map do |h|
-        h.hotel_name
-    end
-end
-
-
-
-def recommend                           #can we pass a method into a string using {} ?
-    if getChosenHotelRating(hotel_choice) == 3
-        response = $prompt.yes?("Great! Would you mind checking out #{name_of_hotel} with a higher max. occupancy?")
-        convert_response
-    elsif getChosenHotelRating(hotel_choice) == 4
-        response = $prompt.yes?("Awesome! We also have a luxurious style option with a hot tub/jacuzzi for #{} more. Would you consider this choice?")
-        convert_response
-            
+def hotelfivestar(response)
+    
+    if @response == true
+        puts "This is the absolute BEST hotel in town"
+        option = (Hotel.find_by avg_rating: 5).hotel_name
+        $prompt.select("Choose an option", [option], active_color: :on_bright_red)
+        puts "Your entry has been saved 😍"
+           
     end
     
 end
 
-def convert_response(response, hotel_choice, name_of_hotel)
-    if response == "Yes"
-        iden = (Hotel.find_by hotel_name: name_of_hotel).id
-        List.create(hotel_id: iden)     #come back to this
-    else
-        iden = (Hotel.find_by hotel_name: hotel_choice).id
-        List.create(hotel_id: iden)
+
+def houston 
+    arr = Hotel.where("city==?","Houston")    #this prints out the *names* of hotels in the chosen city
+    arr.map do |x|
+        x.hotel_name
+    end
+end
+
+def la 
+    arr = Hotel.where("city==?","LA")    #this prints out the *names* of hotels in the chosen city
+    arr.map do |x|
+        x.hotel_name
+    end
+end
+
+def lasvegas 
+    arr = Hotel.where("city==?","Las Vegas")    #this prints out the *names* of hotels in the chosen city
+    arr.map do |x|
+        x.hotel_name
+    end
+end
+
+def miami 
+    arr = Hotel.where("city==?","Miami")    #this prints out the *names* of hotels in the chosen city
+    arr.map do |x|
+        x.hotel_name
+    end
+end
+
+def chicago 
+    arr = Hotel.where("city==?","Chicago")    #this prints out the *names* of hotels in the chosen city
+    arr.map do |x|
+        x.hotel_name
     end
 end
 
 
-
-
 welcome
+
