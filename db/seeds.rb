@@ -36,6 +36,6 @@ Hotel.create(hotel_name:"Grand Maxim Hotel",address:"781 Devonaire driveway",cit
 
 l1 = List.create(user_id: u1.id, hotel_id: h1.id)
 
-# binding.pry
+binding.pry
 0
 
