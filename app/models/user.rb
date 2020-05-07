@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
     has_many :hotels, through: :lists
 
     def add_hotel(hotel)
-        List.create(user_id: self.id, hotel_id: hotel.id)
+        List.create(user_id: self.id,hotel_id: hotel.id)
         display_list
     end
 
@@ -14,11 +14,11 @@ class User < ActiveRecord::Base
         user_list.each do |info| 
             p "Hotel: #{info[0]}, Address: #{info[1]}, City: #{info[2]}, Average Rating: #{info[3]}, Price: #{info[4]}"
         end
+        user_list
     end
 
     def delete_hotel(name)
-        #hotels.delete_by(hotel_name: name)
-        hotels.where(hotel_name: name).delete_all
+        hotels.delete_by(hotel_name: name)
         display_list
     end
 

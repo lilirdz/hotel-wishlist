@@ -59,8 +59,4 @@ welcome
 #     end
 # end
 
-# def display_hotel_list_by_user(user)
-#     List.find_by(user_id: user.id)
-#     List.joins("JOIN hotels on lists.hotel_id = hotels.id")
-# end
 
