@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
             List.find_or_create_by(user_id: self.id,hotel_id: hotel.id)
             puts "This hotel has been added to your list!"
         else
-            puts "This hotel is already in your list!"
+            puts "This hotel is already on your list!"
         end
     end
 
