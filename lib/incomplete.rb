@@ -6,31 +6,22 @@ def choose_city
     filtered_hotels.each do |x|
        puts "Hotel: #{x.hotel_name}, Address: #{x.address}, City: #{x.city}, Average Rating: #{x.avg_rating}, Price: #{x.price}"
     end
-    # hotel_names = filtered_hotels.map {|x| x.hotel_name}
-    # hotel_ids = filtered_hotels.map {|x| x.id}
 end
 
-def more_filters?
+def more_filters?(user)
     filter_more = @prompt.yes?("Would you like to filter some more?")
     if filter_more == true
-        choose_preferences
+        choose_preferences(user)
     else
         selection = @prompt.ask("Which hotel do you like?")
-        #add hotel to list here
-        #puts "Hello"
-        # b = Hotel.find_by(hotel_name: selection)
-        # b = Hotel.all.select{|x| x.hotel_name == selection}
-        # choosen_hotel_id = b.map{|x| x.id}
-        # user.List.find_by_or_create(hotel_id:choosen_hotel_id)
-        user.add_hotel(selection)
-        puts "The #{selection} Hotel has been added to your list!"
-        user.display_list
+        chosen_hotel = Hotel.find_by(hotel_name: selection)
+        user.add_hotel(chosen_hotel)
         #ty's code goes here
     end
 end
 
 
-def choose_preferences
+def choose_preferences(user)
     preferences = ["Average Rating", "Price"]
     user_preferences = @prompt.select("Choose your preferences",preferences)
     if user_preferences == preferences[0]
@@ -43,8 +34,8 @@ def choose_preferences
         ask_add_hotel = @prompt.yes?("Would you like to add a hotel?")
         if ask_add_hotel == true
             select_hotel = @prompt.ask("Please type the hotel you wish to add")
-            #add hotel to list goes here
-            puts "#{select_hotel} has been added to your list!"
+            chosen_hotel = Hotel.find_by(hotel_name: select_hotel)
+            user.add_hotel(chosen_hotel)
             #ty's code goes here
         end
     elsif user_preferences == preferences[1]
@@ -57,18 +48,12 @@ def choose_preferences
         ask_add_hotel = @prompt.yes?("Would you like to add a hotel?")
         if ask_add_hotel == true
             select_hotel = @prompt.ask("Please type the hotel you wish to add")
-            #add hotel to list goes here
-            puts "#{select_hotel} has been added to your list!"
+            chosen_hotel = Hotel.find_by(hotel_name: select_hotel)
+            user.add_hotel(chosen_hotel)
             #ty's code goes here
         end
     end
 end
-
-# def display_hotels_by_filters
-#     puts "Here are all the hotels in #{select_city} with an average rating of #{select_rating} and a price within #{select_pricing}"
-#     Hotel.where(city:choose_city,avg_rating: choose_preferences, price: choose_preferences)
-# end
-
 
 def delete_options(user)
     if user.hotels.empty?
@@ -92,15 +77,3 @@ def delete_options(user)
         end
     end
 end
-
-
-
-
-# def display_hotel_list_by_user(user)
-#     List.find_by(user_id: user)
-#     user_list = List.joins("JOIN hotels on lists.hotel_id = hotels.id")
-#     p user_list
-# end
-
-
-#still need to group avg_rating and prices, in sql using case and renaming

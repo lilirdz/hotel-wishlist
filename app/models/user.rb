@@ -3,9 +3,13 @@ class User < ActiveRecord::Base
     has_many :hotels, through: :lists
 
     def add_hotel(hotel)
-        # h = hotels.where(hotel_name: hotel)
-        List.create(user_id: self.id,hotel_id: hotel.id)
-        display_list
+        find_hotel = List.find_by(user_id: self.id,hotel_id: hotel.id)
+        if find_hotel == nil
+            List.find_or_create_by(user_id: self.id,hotel_id: hotel.id)
+            puts "This hotel has been added to your list!"
+        else
+            puts "This hotel is already in your list!"
+        end
     end
 
     def display_list
