@@ -6,13 +6,12 @@ require "tty-prompt"
 $prompt = TTY::Prompt.new
 
 
-
 def welcome
     puts "Hello! Welcome to your Hotel Wishlist!"  #Greeting
     @name = $prompt.ask('What is your name?')       #first question
     @password = $prompt.mask('What is your password?')
     menu
-    profile(@name, @password)
+    
 end
 
 
@@ -37,9 +36,9 @@ end
 
 
 def chooseCity
-    city_choice = $prompt.select("Choose your city?", %w(Houston LA LasVegas Miami Chicago), active_color: :on_bright_magenta) #user has a choice to make from options
+    @city_choice = $prompt.select("Choose your city?", %w(Houston LA LasVegas Miami Chicago), active_color: :on_bright_magenta) #user has a choice to make from options
     
-    display_hotels(city_choice)     #apply this method to display hotels in the city that was chosen
+    display_hotels(@city_choice)     #apply this method to display hotels in the city that was chosen
 end
 
 
@@ -64,7 +63,7 @@ end
 
 def getChosenHotelRating(hotel_choice)          #basically just searches for the hotel instance by name and returns its rating
     @rating = (Hotel.find_by hotel_name: @hotel_choice).avg_rating
-    
+    # puts @rating
     recommend(@rating)
     # Hotel.where("hotel_name = ?", @hotel_choice)
     # "you're good"
@@ -78,66 +77,62 @@ def recommend(rating)                           #can we pass a method into a str
     elsif @rating == 3
         @response = $prompt.yes?("Great! Would you mind checking out another with a higher max. occupancy?")
         hotelfourstar(@response)
+    else
+        puts "You've made an option for the highest-rated hotel in your city"
+        $prompt.yes?('Have you visited this hotel previously?')
+        yesorno(@ans)
+        puts "Your entry has been saved 😍"
+        
     end
     
     
 end
-
-# LILI
-
-
-# @prompt = TTY::Prompt.new
-
-
-# def welcome
-#     puts "Hello! Welcome to your Hotel Wishlist!"
-#     user_input = @prompt.ask('What is your name?',required: true)
-#     puts "Hello #{user_input}"
-#     user = User.find_or_create_by(user_name: user_input)
-#     menu(user)
-# end
-
-# def menu(user)
-#     user = User.find(user.id)
-#     menu = ["View your wishlist", "Add to your wishlist", "Remove hotels from your wishlist", "Restart", "Exit"]
-#     user_input = @prompt.select("Choose an option",menu)
-#     if user_input == menu[0]
-#         user.display_list
-#         menu(user)
-#     elsif user_input == menu[1]
-#         #select and add to list method
-#         choose_city
-#         more_filters?(user)
-#         menu(user)
-#     elsif user_input == menu[2]
-#         #remove from list method
-#         delete_options(user)
-#         menu(user)
-#     elsif user_input == menu[3]
-#         #need to clear current user data if a new user is using app
-#         welcome
-#         menu()
-#     elsif user_input == menu[4]
-#         puts "See you next time!"
-#     end
-# end
-
-
-# LILI
-welcome
 
 
 def hotelfivestar(response)
     
     if @response == true
-        puts "This is the absolute BEST hotel in town"
+        
         option = (Hotel.find_by avg_rating: 5).hotel_name
         $prompt.select("Choose an option", [option], active_color: :on_bright_red)
+        puts "This is the absolute BEST hotel in town"
+        @ans = $prompt.yes?('Have you visited this hotel previously?')
+        yesorno(@ans)
         puts "Your entry has been saved 😍"
-           
-    end
-    
+        partingMessage
+    end 
+
+        
 end
+
+def yesorno(ans)
+    if @ans == true
+        #update visited? column to "Yes" for this hotel
+    elsif @ans == false
+        #update visited? column to "No" for this hotel
+    end
+end
+
+
+def hotelfourstar(response)
+    if @response == true
+        
+        option = (Hotel.find_by avg_rating: 4, city: @city_choice).hotel_name
+        $prompt.select("Choose an option", [option], active_color: :on_bright_red)
+        puts "Great choice! You'll absolutely love it there"
+        @ans = $prompt.yes?('Have you visited this hotel previously?')
+        yesorno(@ans)
+        puts "Your entry has been saved 😍"
+    end
+end
+
+
+def partingMessage
+    "Thanks for using our app. Please check back for more exciting features"
+end
+
+
+
 
 
 def houston 
